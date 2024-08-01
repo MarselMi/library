@@ -1,0 +1,260 @@
+{% extends 'auth_base.html' %}
+{% load static %}
+{% block content %}
+
+	<div class="card-body pt-5 pb-5 ps-5 pe-5">
+		<h1 class="h3 pb-3 mb-4 border-bottom text-center">
+			{{ title }}
+		</h1> <!-- /title -->
+
+
+		<form action="#" method="POST" novalidate>
+			{% csrf_token %}
+
+			<div class="container mb-3">
+				<div class="row">
+					<div class="col-6">
+						<input type="radio" value="0" class="btn-check" name="role" id="reader" autocomplete="off" checked>
+						<label class="btn btn-outline-success" for="reader">Читатель</label>
+					</div>
+
+					<div class="col-6">
+						<input type="radio" value="1" class="btn-check" name="role" id="librarian" autocomplete="off">
+						<label class="btn btn-outline-danger" for="librarian">Библиотекарь</label>
+					</div>
+				</div>
+
+			</div>
+			<div class="change-form">
+
+				<div class="form-floating mb-3">
+					<input class="form-control check_valid" name="username" id="username" placeholder="username" required>
+					<label for="username">
+						Nickname
+					</label>
+					<div class="invalid-feedback">
+						Пожалуйста, введите корректные данные, поле не может быть пустым
+					</div>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<input class="form-control check_valid" name="firstname" id="firstname" placeholder="firstname" required>
+					<label for="firstname">
+						Имя
+					</label>
+					<div class="invalid-feedback">
+						Пожалуйста, введите корректные данные, поле не может быть пустым
+					</div>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<input class="form-control check_valid" name="lastname" id="lastname" placeholder="lastname" required>
+					<label for="lastname">
+						Фамилия
+					</label>
+					<div class="invalid-feedback">
+						Пожалуйста, введите корректные данные, поле не может быть пустым
+					</div>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<textarea class="form-control" name="address" id="address" placeholder="address"></textarea>
+					<label for="address">
+						Адрес
+					</label>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<input type="password" class="form-control check_valid" name="password" id="password-1" placeholder="******" required>
+					<label for="password-1">
+						Пароль
+					</label>
+					<div class="invalid-feedback">
+						Длинна пароля должна быть более 6 символов
+					</div>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<input type="password" class="form-control check_valid" name="password_2" id="password-2" placeholder="******" required>
+					<label for="password-2">
+						Повторите пароль
+					</label>
+					<div class="invalid-feedback">
+						Пароли не совпадают
+					</div>
+				</div> <!-- /form-floating -->
+			
+			</div>
+
+			<button class="w-100 btn btn-lg btn-primary reg_user" type="submit">
+				Зарегистрироваться
+			</button> <!-- /btn -->
+		</form> <!-- /form -->
+	</div> <!-- /card-body -->
+
+
+	<div class="card-footer text-center">
+		<a href="{% url 'login' %}">
+			Авторизоваться
+		</a>
+
+	</div> <!-- /card-footer -->
+
+<!-- scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<script>
+
+	$('#reader').on('click', function(){
+		$('.change-form').empty();
+		$('.change-form').append(
+			`
+			<div class="form-floating mb-3">
+					<input class="form-control check_valid" name="username" id="username" placeholder="username" required>
+					<label for="username">
+						Nickname
+					</label>
+					<div class="invalid-feedback">
+						Пожалуйста, введите корректные данные, поле не может быть пустым
+					</div>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<input class="form-control check_valid" name="firstname" id="firstname" placeholder="firstname" required>
+					<label for="firstname">
+						Имя
+					</label>
+					<div class="invalid-feedback">
+						Пожалуйста, введите корректные данные, поле не может быть пустым
+					</div>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<input class="form-control check_valid" name="lastname" id="lastname" placeholder="lastname" required>
+					<label for="lastname">
+						Фамилия
+					</label>
+					<div class="invalid-feedback">
+						Пожалуйста, введите корректные данные, поле не может быть пустым
+					</div>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<textarea class="form-control" name="address" id="address" placeholder="address">
+					</textarea>
+					<label for="address">
+						Адрес
+					</label>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<input type="password" class="form-control check_valid" name="password" id="password-1" placeholder="******" required>
+					<label for="password-1">
+						Пароль
+					</label>
+					<div class="invalid-feedback">
+						Длинна пароля должна быть более 6 символов
+					</div>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<input type="password" class="form-control check_valid" name="password_2" id="password-2" placeholder="******" required>
+					<label for="password-2">
+						Повторите пароль
+					</label>
+					<div class="invalid-feedback">
+						Пароли не совпадают
+					</div>
+				</div> <!-- /form-floating -->
+			`
+		)
+	});
+
+	$('#librarian').on('click', function(){
+		$('.change-form').empty();
+		$('.change-form').append(`
+		
+				<div class="form-floating mb-3">
+					<input class="form-control check_valid" name="username" id="username" placeholder="username" required>
+					<label for="username">
+						Nickname
+					</label>
+					<div class="invalid-feedback">
+						Пожалуйста, введите корректные данные, поле не может быть пустым
+					</div>
+				</div> <!-- /form-floating -->
+				
+				<div class="form-floating mb-3">
+					<input autocomplete="off" type="text" class="form-control" name="tab_number" id="tab_number" placeholder="Табельный номер">
+					<label for="tab_number">
+						111-bm-123
+					</label>
+				</div> <!-- /form-floating -->
+				
+				<div class="form-floating mb-3">
+					<input type="password" class="form-control check_valid" name="password" id="password-1" placeholder="******" required>
+					<label for="password-1">
+						Пароль
+					</label>
+					<div class="invalid-feedback">
+						Длинна пароля должна быть более 6 символов
+					</div>
+				</div> <!-- /form-floating -->
+
+				<div class="form-floating mb-3">
+					<input type="password" class="form-control check_valid" name="password_2" id="password-2" placeholder="******" required>
+					<label for="password-2">
+						Повторите пароль
+					</label>
+					<div class="invalid-feedback">
+						Пароли не совпадают
+					</div>
+				</div> <!-- /form-floating -->
+		`);
+	})
+
+	$('#username').on('input', function(){
+		if(!$('#username').val()){
+			$('#username').removeClass('is-valid')
+			$('#username').addClass('is-invalid')
+		}else{
+			$('#username').removeClass('is-invalid')
+		}
+	})
+
+	$('#password-1').on('input', function(){
+		if(($('#password-1').val().length < 6)){
+			$('#password-1').removeClass('is-valid')
+			$('#password-1').addClass('is-invalid')
+		}else{
+			$('#password-1').removeClass('is-invalid')
+		}
+	})
+
+	$('#password-2').on('input', function(){
+		if(!($('#password-2').val() == $('#password-1').val())){
+			$('#password-2').removeClass('is-valid')
+			$('#password-2').addClass('is-invalid')
+		}else{
+			$('#password-2').removeClass('is-invalid')
+		}
+	})
+
+	$('.reg_user').on('click', function(event){
+		if(!$('#username').val() || !($('#password-2').val() == $('#password-1').val()) || ($('#password-1').val().length < 6)){
+			if(!$('#username').val()){
+				$('#username').addClass('is-invalid')
+			}if((!($('#password-2').val() == $('#password-1').val())) || !$('#password-2').val()){
+				$('#password-2').addClass('is-invalid')
+			}if(($('#password-1').val().length < 6)){
+				$('#password-1').addClass('is-invalid')
+			}
+			event.preventDefault();
+		}else{
+			$('form').submit();
+		}
+	})
+
+</script>
+
+{% endblock content %}

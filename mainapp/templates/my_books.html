@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header d-flex align-items-center card-header-no-bg">
+                        <div class="card-title h6 fw-bold text-uppercase border-start border-primary border-3 ps-2 mb-3">
+                            Каталог книг
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-nowrap mb-0">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>Название</th>
+                                        <th>Автор</th>
+                                        <th>Жанр</th>
+                                        <th>Дата получения</th>
+                                        <th>Дата возврата / Вернуть</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center resutl_table">
+                                {% for borrow_book in books_reader %}
+                                    <tr class="align-middle">
+                                        <td>
+                                            {{ borrow_book.book.title }}
+                                            <span type="button" onclick="copyTextToClipboard( {{ book.title }} ); return false;" class="small ms-1" data-bs-toggle="tooltip" data-bs-title="Скопировать {{ book.title }}">
+												<i class="fa-regular fa-clipboard"></i>
+											</span>
+                                        </td>
+                                        <td>{{ borrow_book.book.author }}</td>
+                                        <td>{{ borrow_book.book.genre }}</td>
+                                        <td>{{ borrow_book.borrow_date }}</td>
+                                        <td id="book-id-{{borrow_book.id}}-{{ borrow_book.book.id }}">
+                                            {% if borrow_book.return_date %}
+                                                {{ borrow_book.return_date }}
+                                            {% else %}
+                                                <button borrow-id="{{borrow_book.id}}" value="{{ borrow_book.book.id }}" class="borrow_book text-bg-outline-danger align-items-center justify-content-center rounded-pill">
+                                                    Вернуть
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+    var url = document.location.href;
+    var a = document.cookie.split(';');
+    var token = '';
+
+    for (i = 0; i < a.length; i++) {
+        var b = a[i].split('=');
+        b[0] = b[0].replace(/\s+/g, '');
+        if (b[0] == 'csrftoken') {
+            token = b[1];
+        }
+    };
+
+    const custom_month = {
+        0: "январь",
+        1: "февраль",
+        2: "март",
+        3: "апрель",
+        4: "май",
+        5: "июнь",
+        6: "июль",
+        7: "август",
+        8: "сентябрь",
+        9: "октярь",
+        10: "ноябрь",
+        11: "декабрь"
+    };
+
+    var borrow_books = $('.borrow_book');
+
+    for (let i = 0; i < borrow_books.length; i++){
+        borrow_books[i].addEventListener('click', function(event){
+            var borrow_id = borrow_books[i].getAttribute("borrow-id");
+            var book_id = borrow_books[i].value;
+            console.log(borrow_id);
+            console.log(book_id);
+            $.ajax(
+                {
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: token,
+                        type: 'return_book',
+                        book_id: book_id,
+                        borrow_id: borrow_id
+                    }
+                }
+            ).then(function(result){
+                $(`#book-id-${borrow_id}-${book_id}`).empty();
+                var new_element = new Date;
+                $(`#book-id-${borrow_id}-${book_id}`).append(`${new_element.getDate()} ${custom_month[new_element.getMonth()]} ${new_element.getFullYear()} г.`);
+            }).catch(function(err){
+                var x = 0;
+            })
+        })
+    };
+    </script>
+{% endblock content %}

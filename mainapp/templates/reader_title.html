@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header d-flex align-items-center card-header-no-bg">
+                        <div class="card-title h6 fw-bold text-uppercase border-start border-primary border-3 ps-2 mb-3">
+                            Каталог книг
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-nowrap mb-0">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>Название</th>
+                                        <th>Автор</th>
+                                        <th>Жанр</th>
+                                        <th>Взять/Вернуть</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center resutl_table">
+                                {% for book in all_books %}
+                                    <tr class="align-middle">
+                                        <td>
+                                            {{ book.title }}
+                                            <span type="button" onclick="copyTextToClipboard( {{ book.title }} ); return false;" class="small ms-1" data-bs-toggle="tooltip" data-bs-title="Скопировать {{ book.title }}">
+												<i class="fa-regular fa-clipboard"></i>
+											</span>
+                                        </td>
+                                        <td>{{ book.author }}</td>
+                                        <td>{{ book.genre }}</td>
+                                        <td id="book-id-{{ book.id }}">
+                                            {% if request.user in book.unavailable_readers.all %}
+                                                <button value="{{ book.id }}" class="borrow_book text-bg-outline-danger align-items-center justify-content-center rounded-pill">
+                                                    Вернуть
+                                                </button>
+                                            {% else %}
+                                                <button value="{{ book.id }}" class="books text-bg-outline-success align-items-center justify-content-center rounded-pill">
+                                                    Получить
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    var url = document.location.href;
+    var a = document.cookie.split(';');
+    var token = '';
+
+    for (i = 0; i < a.length; i++) {
+        var b = a[i].split('=');
+        b[0] = b[0].replace(/\s+/g, '');
+        if (b[0] == 'csrftoken') {
+            token = b[1];
+        }
+    };
+
+    
+    var books = $('.books');
+
+    for (let i = 0; i < books.length; i++){
+        books[i].addEventListener('click', function(event){
+            var book_id = books[i].value;
+            console.log(book_id);
+            $.ajax(
+                {
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: token,
+                        type: 'take_book',
+                        book_id: book_id
+                    }
+                }
+            ).then(function(result){
+                $(`#book-id-${book_id}`).empty();
+                var new_element = `<button value="${book_id}" class="borrow_book text-bg-outline-danger align-items-center justify-content-center rounded-pill">
+                                        Вернуть
+                                    </button>`;
+                $(`#book-id-${book_id}`).append(new_element);
+            }).catch(function(err){
+                var x = 0;
+            })
+        })
+    };
+    
+    var borrow_books = $('.borrow_book');
+
+    for (let i = 0; i < borrow_books.length; i++){
+        borrow_books[i].addEventListener('click', function(event){
+            var book_id = borrow_books[i].value;
+            console.log(book_id);
+            $.ajax(
+                {
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: token,
+                        type: 'return_book',
+                        book_id: book_id
+                    }
+                }
+            ).then(function(result){
+                $(`#book-id-${book_id}`).empty();
+                var new_element = `<button value="${book_id}" class="books text-bg-outline-success align-items-center justify-content-center rounded-pill">
+                                        Получить
+                                    </button>`;
+                $(`#book-id-${book_id}`).append(new_element);
+            }).catch(function(err){
+                var x = 0;
+            })
+        })
+    };
+
+</script>
+{% endblock content %}
