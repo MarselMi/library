@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-h2*myl1vw@=shq7wzxb9pwcknu^8jkcp=ev_f$mcbh(gyww==n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -75,12 +78,12 @@ TEMPLATES = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5), # Срок действия токена доступа (например, 5 минут)
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1), # Срок действия токена обновления (например, 1 день)
-    'ROTATE_REFRESH_TOKENS': True, # Автоматически генерировать новый токен обновления при каждом обновлении
-    'ALGORITHM': 'HS256', # Алгоритм шифрования (например, HS256)
-    'SIGNING_KEY': SECRET_KEY, # Ключ подписи (используйте секретный ключ вашего проекта)
-    'AUTH_HEADER_TYPES': ('Bearer',), # Тип заголовка авторизации
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),  # Срок действия токена доступа (например, 5 минут)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Срок действия токена обновления (например, 1 день)
+    'ROTATE_REFRESH_TOKENS': True,  # Автоматически генерировать новый токен обновления при каждом обновлении
+    'ALGORITHM': 'HS256',  # Алгоритм шифрования (например, HS256)
+    'SIGNING_KEY': SECRET_KEY,  # Ключ подписи (используйте секретный ключ вашего проекта)
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Тип заголовка авторизации
 }
 
 REST_FRAMEWORK = {
