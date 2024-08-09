@@ -16,10 +16,10 @@ urlpatterns = [
     path('token/refresh/', views.MyTokenRefreshView.as_view(), name='token_refresh'),
 
     # эндпоинты для получения списка книг, и взять книгу для чтения
-    path('book/', views.get_list_books, name='book'),
-    path('book/<book_id>/', views.get_book_to_read, name='get_books'),
+    path('books/', views.get_list_books, name='book'),
+    path('books/<book_id>/', views.get_book_to_read, name='get_book'),
 
-    # эндпоинты для получения списка книг на руках
+    # эндпоинты для получения списка книг на руках, вернуть книгу
     path('borrow_books/', views.get_list_borrow_books, name='borrow_books'),
-    path('borrow_books/<book_id>/', views.return_book, name='borrow_books'),
+    path('borrow_books/<book_id>/', views.return_book, name='borrow_book'),
 ]
