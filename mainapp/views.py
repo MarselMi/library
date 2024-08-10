@@ -53,16 +53,16 @@ def reader_index_view(request):
         return redirect('debtors')
 
     # Все книги хранящиеся в библиотеке
-    all_books = models.Book.objects.all()
+    all_books: models.Book = models.Book.objects.all()
 
     # Книги которые находятся у пользователя
-    borrow_books = models.BorrowedBook.objects.filter(reader=request.user, return_date=None)
+    borrow_books: models.BorrowedBook = models.BorrowedBook.objects.filter(reader=request.user, return_date=None)
 
     if request.method == 'POST':
         if request.POST.get('type') == 'take_book':
             # Обработка AJAX запроса на получение книги
             book_id = request.POST.get('book_id')
-            take_book = models.Book.objects.filter(pk=book_id)[0]
+            take_book: models.Book = models.Book.objects.filter(pk=book_id)[0]
             take_book.unavailable_readers.add(int(request.user.id))
             new_borrow_data = {
                 'book': take_book,
@@ -94,7 +94,7 @@ def librarian_index_view(request):
         return redirect('main_page')
 
     # выводим книги которые на выдаче
-    debtor_books = models.BorrowedBook.objects.filter(return_date=None)
+    debtor_books: models.BorrowedBook = models.BorrowedBook.objects.filter(return_date=None)
     data = {'debtor_books': debtor_books}
     return render(request, 'librarian_index.html', data)
 
@@ -117,7 +117,7 @@ def my_books_view(request):
         return HttpResponse({'status': 'OK'})
 
     # Вывожу все книги которые получал пользователь
-    books_reader = models.BorrowedBook.objects.filter(reader=request.user)
+    books_reader: models.BorrowedBook = models.BorrowedBook.objects.filter(reader=request.user)
 
     data = {'books_reader': books_reader}
 

@@ -20,7 +20,7 @@ class MyTokenRefreshView(TokenRefreshView):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])  # доступ только авторизованным пользователям
 def get_list_books(request):
-    queryset = Book.objects.all()
+    queryset: Book = Book.objects.all()
     serializer = BookSerializer(queryset, many=True)
     return Response(serializer.data)
 
@@ -29,7 +29,7 @@ def get_list_books(request):
 @permission_classes([IsAuthenticated])
 def get_book_to_read(request, book_id):
 
-    take_book = Book.objects.filter(pk=book_id)[0]
+    take_book: Book = Book.objects.filter(pk=book_id)[0]
     take_book.unavailable_readers.add(int(request.user.id))
     new_borrow_data = {
         'book': take_book,
@@ -43,7 +43,7 @@ def get_book_to_read(request, book_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_list_borrow_books(request):
-    queryset = BorrowedBook.objects.filter(reader=request.user.id, return_date=None)
+    queryset: BorrowedBook = BorrowedBook.objects.filter(reader=request.user.id, return_date=None)
     serializer = BorrowBookSerializer(queryset, many=True)
     return Response(serializer.data)
 
