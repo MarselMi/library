@@ -3,7 +3,6 @@ from django.urls import reverse
 from rest_framework import status
 from mainapp.models import Book, Genre, BorrowedBook, CustomUser
 from api.serializers import BookSerializer, BorrowBookSerializer
-import logging
 
 
 class BookAPITestCase(TestCase):
@@ -29,7 +28,6 @@ class BookAPITestCase(TestCase):
 
         self.genre_data = {'name': 'Роман'}
         self.genre = Genre.objects.create(**self.genre_data)
-        # logging.log(msg=self.token, level=1)
 
         self.book_data = {
             'title': 'The Lord of the Rings',
@@ -72,6 +70,5 @@ class BookAPITestCase(TestCase):
             reverse('borrow_book', args=[self.book.pk]),
             headers={'Authorization': f'Bearer {self.token}'}
         )
-        logging.log(msg=f"test_get_book_list {response.data}", level=1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual({'status': 'OK'}, response.data)
