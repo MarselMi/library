@@ -38,7 +38,7 @@ class Book(models.Model):
     title = models.CharField(max_length=127, blank=True, null=True, verbose_name='Название')
     author = models.CharField(max_length=255, blank=True, null=True, verbose_name='Автор')
     genre = models.ForeignKey('Genre', on_delete=models.CASCADE, verbose_name='Жанр')
-    unavailable_readers = models.ManyToManyField('CustomUser')
+    unavailable_readers = models.ManyToManyField('CustomUser')  # Читатели у которых книги на руках
 
     def __str__(self):
         return f'{self.title}'
