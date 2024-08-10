@@ -14,7 +14,8 @@ class BookAPITestCase(TestCase):
         self.user_data = {
             'username': 'test_user',
             'password': 'password123',
-            'tab_number': '4568-5654-asd',
+            'first_name': 'Иван',
+            'last_name': 'Иванов',
             'address': 'Russin Federation, Moskow, Lenina street 24',
             'is_librarian': False
         }
